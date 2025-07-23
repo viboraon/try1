@@ -2037,17 +2037,43 @@ Neck.C0=Lerp(Neck.C0,cfMul(cf(0,1,0),angles(-1.5707963267948966,0,3.141592653589
 end
 	})
 
-	addmode("q", {
-		idle = function()
-			velYchg()
+local animIndex = 1
+local animTime = 0
+local animDurations = { 2, 3, 1.5 }
+local sequenceFinished = false
 
-LeftHip.C0 = Lerp(LeftHip.C0, cfMul(cf(-1, -1, 0), angles(0, -1.5707963267948966, 0)), deltaTime)
-RightHip.C0 = Lerp(RightHip.C0, cfMul(cf(1, -1, 0), angles(0, 1.5707963267948966, 0)), deltaTime)
-RightShoulder.C0 = Lerp(RightShoulder.C0, cfMul(cf(1, 0.5, 0), angles(0, 1.5707963267948966, 0)), deltaTime)
-RootJoint.C0 = Lerp(RootJoint.C0, angles(-1.5707963267948966, 0, 3.141592653589793), deltaTime)
-LeftShoulder.C0 = Lerp(LeftShoulder.C0, cfMul(cf(-1, 0.5, 0), angles(0, -1.5707963267948966, 0)), deltaTime)
-Neck.C0 = Lerp(Neck.C0, cfMul(cf(0, 1, 0), angles(-1.5707963267948966, 0, 3.141592653589793)), deltaTime) end
-	})
+addmode("q", {
+    idle = function(deltaTime)
+        velYchg()
+
+        if sequenceFinished then
+            return
+        end
+
+        animTime = animTime + deltaTime
+
+        if animIndex == 1 then
+LeftHip.C0=Lerp(LeftHip.C0,cfMul(cf(-1,-1,0),angles(0,-1.5707963267948966,0)),deltaTime)  RightHip.C0=Lerp(RightHip.C0,cfMul(cf(1,-1,0),angles(0,1.5707963267948966,0)),deltaTime)  LeftShoulder.C0=Lerp(LeftShoulder.C0,cfMul(cf(-1,0.5,0),angles(0,-1.5707963267948966,0)),deltaTime)  RightShoulder.C0=Lerp(RightShoulder.C0,cfMul(cf(1,0.5,0),angles(1.5707963267948966,0.3490658503988659,1.2217304763960306)),deltaTime)  Neck.C0=Lerp(Neck.C0,cfMul(cf(0,1,0),angles(-1.5707963267948966,0,3.141592653589793)),deltaTime)  RootJoint.C0=Lerp(RootJoint.C0,angles(-1.5707963267948966,0,1.7453292519943295),deltaTime)
+
+        elseif animIndex == 2 then
+LeftHip.C0=Lerp(LeftHip.C0,cfMul(cf(-1,-1,0),angles(0,-1.5707963267948966,0)),deltaTime)  RightHip.C0=Lerp(RightHip.C0,cfMul(cf(1,-1,0),angles(0,1.5707963267948966,0)),deltaTime)  LeftShoulder.C0=Lerp(LeftShoulder.C0,cfMul(cf(-1,0.5,0),angles(0,-1.5707963267948966,0)),deltaTime)  RightShoulder.C0=Lerp(RightShoulder.C0,cfMul(cf(1,0.5,0),angles(1.5707963267948966,0.3490658503988659,0)),deltaTime)  Neck.C0=Lerp(Neck.C0,cfMul(cf(0,1,0),angles(-1.5707963267948966,0,3.141592653589793)),deltaTime)  RootJoint.C0=Lerp(RootJoint.C0,angles(-1.5707963267948966,0,3.490658503988659),deltaTime)
+
+        elseif animIndex == 3 then
+            LeftShoulder.C0 = Lerp(LeftShoulder.C0, cfMul(cf(-1, 0.5, 0), angles(0, -1.5707963267948966, 0)), deltaTime)
+            Neck.C0 = Lerp(Neck.C0, cfMul(cf(0, 1, 0), angles(-1.5707963267948966, 0, 3.141592653589793)), deltaTime)
+        end
+
+        if animTime >= animDurations[animIndex] then
+            animIndex = animIndex + 1
+            animTime = 0
+
+            if animIndex > #animDurations then
+                -- Termino la secuencia
+                sequenceFinished = true
+            end
+        end
+    end
+        })
 	addmode("e", {
 		idle = function()
 			velYchg()
